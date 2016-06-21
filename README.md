@@ -2,12 +2,17 @@
 
 # RUBIK's CUBE
 ## Installation
-`git clone https://github.com/deenaarifff/RubiksCube'`
+`git clone https://github.com/deenaarifff/RubiksCube`
+
 Ensure mongo is installed and run daemon
+
 `mongod`
+
 Navigate to ./Server directory
+
 Ensure Pymongo is installed
 `pip install pymongo`
+
 Run start script
 `python start.py`
 ## Usage
