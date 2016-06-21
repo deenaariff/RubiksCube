@@ -1,0 +1,76 @@
+html, body{
+  width:100%; width:100%; margin:0; padding:0;
+  background: #000;
+}
+
+#cube {
+  -webkit-perspective: 800px;
+  -webkit-perspective-origin: 50% 200px;
+  -moz-perspective: 800px;
+  -moz-perspective-origin: 50% 200px;
+  perspective: 800px;
+  perspective-origin: 50% 200px;
+}
+
+button {
+}
+
+button:hover {
+  background:blue;
+  color: white;
+}
+
+#container {
+  position: relative;
+  margin: 6em auto;
+  height: 20em;
+  width: 20em;
+  top: 7em;
+  -webkit-transition: -webkit-transform 2s linear;
+  -webkit-transform-style: preserve-3d;
+  -moz-transition: -moz-transform 2s linear;
+  -moz-transform-style: preserve-3d;
+  transition: transform 2s linear;
+  transform-style: preserve-3d;
+}
+
+.face {
+  position: absolute;
+  padding: none;
+}
+
+.square :hover {
+  border: solid 1px orange;
+}
+
+.square {
+  height: 5em;
+  width:  5em;
+  border: 1px solid black;
+  display: inline-block;
+  opacity: 0.75;
+}
+
+#cube .one  {
+  -webkit-transform: rotateX(90deg) translateZ(7.6em);
+}
+
+#cube .two {
+  -webkit-transform: translateZ(7.6em);
+}
+
+#cube .three {
+  -webkit-transform: rotateY(90deg) translateZ(7.6em);
+}
+
+#cube .four {
+  -webkit-transform: rotateY(180deg) translateZ(7.6em);
+}
+
+#cube .five {
+  -webkit-transform: rotateY(-90deg) translateZ(7.6em);
+}
+
+#cube .six {
+  -webkit-transform: rotateX(-90deg) translateZ(7.6em) rotate(0deg);
+}

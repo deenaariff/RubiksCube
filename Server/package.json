@@ -1,0 +1,30 @@
+{
+  "name": "rubiks",
+  "version": "1.0.0",
+  "description": "rubiks cube application",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deenaariff/RubiksCube.git"
+  },
+  "keywords": [
+    "none"
+  ],
+  "author": "Deen Aariff",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/deenaariff/RubiksCube/issues"
+  },
+  "homepage": "https://github.com/deenaariff/RubiksCube#readme",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "express": "^4.14.0",
+    "mongodb": "^2.1.18",
+    "mongojs": "^2.4.0",
+    "nodemon": "^1.9.2",
+    "socket.io": "^1.4.6"
+  }
+}
