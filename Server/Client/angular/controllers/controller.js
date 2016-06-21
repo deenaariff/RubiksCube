@@ -204,6 +204,7 @@ controllers.controller("MainCtrl", function($scope, SocketIO, cubeLogic) {
         function hMove (cube,_id,row,dir,_buffer,iter,path) {
             var buf = [];
             var pathArray = []
+            var rotations = paths[hAdjacencyPath[_id]][_id];
             if(!iter) {
               iter = 1;
               pathArray = pathSearch[hAdjacencyPath[_id]]
@@ -211,8 +212,11 @@ controllers.controller("MainCtrl", function($scope, SocketIO, cubeLogic) {
             else {
               iter = iter + 1;
               pathArray = path;
+              if (_id === "5")
+                rotations = 3;
+              else if (_id === "3")
+                rotations = 1;
             }
-            var rotations = paths[hAdjacencyPath[_id]][_id];
             rotateMatrix(_id,rotations)
             for (var i = 0; i < cube[_id].length; i++)
                 buf.push(cube[_id][row][i])
@@ -240,6 +244,7 @@ controllers.controller("MainCtrl", function($scope, SocketIO, cubeLogic) {
         function vMove (cube,_id,col,dir,_buffer,iter,path) {
           var buf = [];
           var pathArray = []
+          var rotations = paths[vAdjacencyPath[_id]][_id];
           if(!iter) {
             iter = 1;
             pathArray = pathSearch[vAdjacencyPath[_id]]
@@ -247,8 +252,9 @@ controllers.controller("MainCtrl", function($scope, SocketIO, cubeLogic) {
           else {
             iter = iter + 1;
             pathArray = path;
+            if (vAdjacencyPath[_id] === '')
+              rotations = 0;
           }
-          var rotations = paths[vAdjacencyPath[_id]][_id];
           rotateMatrix(_id,rotations)
           for (var i = 0; i < cube[_id].length; i++)
               buf.push(cube[_id][i][col])

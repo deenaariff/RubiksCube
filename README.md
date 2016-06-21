@@ -1,6 +1,6 @@
 <snippet>
 
-# RUBIK's CUBE
+# RUBIKS CUBE WEB APP
 ## Installation
 `git clone https://github.com/deenaarifff/RubiksCube`
 
@@ -16,7 +16,7 @@ Ensure Pymongo is installed
 Run start script
 `python start.py`
 ## Usage
-A browser window should open. If not navigate to localhost:3000/.
+Connect to localhost 3000 on browser or navigate to web page via
 `open -a "Google Chrome" localhost:3000`
 The rubik's cube can be rotated with the arrow keys. Click on a square to select
 it and enable a row or column movement. Create a user to Record Results
