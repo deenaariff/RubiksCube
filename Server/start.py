@@ -13,5 +13,5 @@ collection.insert_one(
         "test": "test"
     }
 )
-print 'Run Server'
+print 'Running Server'
 subprocess.call(['nodemon', 'index.js'])
