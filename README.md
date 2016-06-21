@@ -1,6 +1,6 @@
 <snippet>
-  <content><![CDATA[
-# ${1:RUBIK's CUBE}
+
+# RUBIK's CUBE
 ## Installation
 `git clone https://github.com/deenaarifff/RubiksCube'`
 Ensure mongo is installed and run daemon
@@ -19,14 +19,18 @@ it and enable a row or column movement. Create a user to Record Results
 Stack: MEAN Stack + socket.io decided upon because of Full Javascript
 functionality and ability to create a session for each user. Socket.io allowed
 for asychronous  calls.
+
 Front-End: AngularJs used with JQuery for cube rotation. Cube is a JSON document,
 with 6 keys and a 3x3 array corresponding to them. The document is updated on
 each update on the client side.
+
 Backend: Node.js to host Socket.io and communicate with DB
+
 Database: MongoDB for easy storage of JSON documents
+
 Security: Not Implemented, Insufficient Time
+
 DB Scaling: Not Implemented, Insufficient Time
 
-]]></content>
-  <tabTrigger>readme</tabTrigger>
+
 </snippet>
