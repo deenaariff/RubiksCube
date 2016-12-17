@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 
-<html ng-app="Rubic">
 
 <head>
 
@@ -12,76 +11,93 @@
     <script type="text/javascript" src="./angular/app.js"></script>
     <script type="text/javascript" src="./angular/controllers/controller.js"></script>
     <script type="text/javascript" src="./angular/services/socket.js"></script>
-    <script type="text/javascript" src="./angular/services/cubeLogic.js"></script>
+    <script type="text/javascript" src="./angular/factory/cubeLogic.js"></script>
     <link rel="stylesheet" type="text/css" href="./css/style.css">
     <link rel="stylesheet" type="text/css" href="./css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
 
 </head>
 
-<body ng-controller="MainCtrl">
+<body ng-app="Rubic" ng-controller="MainCtrl">
 
-    <h1 style="color: white"> {{ error }} </h1>
+    <div class="logon col-xs-12 col-md-3">
 
-    <div class="logon">
-        <form ng-show="signin">
-            <input ng-model="data.signin.u_email" placeholder="email" />
-            <input ng-model="data.signin.pass" placeholder="password" />
-            <button ng-click="login()">Logon</button>
-            <button ng-click="signin = false; cuser = true;">Signup</button>
+        <h1 class="title"> 3D Rubik's Cube </h1>
+        <p>Hey and thanks for stopping by! This a 3D virtual Rubik's cube done in Angular.js. Keep scrolling down to view instructions. Have fun. </p>
+        <p> Note: Login system has been disabled as servers cannot be hosted at this time.</p>
+
+        <h2 class="subtitle"> Login </h2>
+        <form class="signin" ng-show="signin">
+            <button class="action" ng-click="signin = false; cuser = true;"><i class="fa fa-user-plus" aria-hidden="true"></i> Need to Signup?</button>
+            <button class="action" ng-click="login()"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</button>
+            <input ng-model="data.signin.u_email" placeholder="Email">
+            <input type="password" ng-model="data.signin.pass" placeholder="Password">
         </form>
         <form ng-show="cuser">
-            <input ng-model="data.cuser.u_email" placeholder="email" />
-            <input ng-model="data.cuser.pass1" placeholder="password" />
-            <input ng-model="data.cuser.pass2" placeholder="confirm password" />
-            <button ng-click="createUser()">Create Your Profile</button>
-            <button ng-click="signin = true; cuser = false;">Back to Login</button>
+            <button class="action" ng-click="signin = true; cuser = false;"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back to Login</button>
+            <button class="action" ng-click="createUser()"><i class="fa fa-plus" aria-hidden="true"></i> Create Profile</button>
+            <input ng-model="data.cuser.u_email" placeholder="Enter Email" />
+            <input ng-model="data.cuser.pass1" placeholder="Enter Password" />
+            <input ng-model="data.cuser.pass2" placeholder="Confirm Password" />
         </form>
-        <form ng-show="instantiation">
-            <button ng-click="signin = true; cuser = false; instantiation = false; signout()">Logout</button>
-        </form>
+
+        <h2 class="subtitle"> Instructions </h2>
+        <p> Move with Arrow Keys, Click to Select Square for Operations </p>
+
+        <h2 class="subtitle"> Ready to Play? </h2>
+
+        <div>
+          <button style='display: inline-block' class ="action .a2"> Let's Start! </button>
+          <p style='display: inline-block; padding-left: 10px;'> TIME: {{ time }}</p>
+          <p style='display: inline-block; padding-left: 10px;'> MOVES: {{ moves }}</p>
+        </div>
+
     </div>
 
-    <h1 style="color: #fff"> TIME : {{ time }}  MOVES : {{ moves }} </h1>
-    <h2 style="color: #fff"> Instructions: Move with Arrow Keys, Click to Select Square for Operations </h2>
-    <button ng-show="move" ng-click="up()">Column Up</button>
-    <button ng-show="move" ng-click="down()">Column Down</button>
-    <button ng-show="move" ng-click="rght()">Row Right</button>
-    <button ng-show="move" ng-click="lft()">Row Left</button>
-    <div id="cube">
-        <div id="container">
-            <div id="face" class="face one" ng-init="parentIndex = $index">
-                <div ng-repeat="instance in cubeDOM[0]">
-                    <div class="square" ng-click = "setCurrent('1',$parent.$index,$index)" ng-repeat="square in instance track by $index" ng-style="{'background-color': hexcodeMap[square]}">1</div>
-                </div>
-            </div>
-            <div id="face" class="face four">
-                <div ng-repeat="instance in cubeDOM[1]">
-                    <div class="square" ng-click = "setCurrent('4',$parent.$index,$index)" ng-repeat="square in instance track by $index" ng-style="{'background-color': hexcodeMap[square]}">4</div>
-                </div>
-            </div>
-            <div id="face" class="face five">
-                <div ng-repeat="instance in cubeDOM[2]">
-                    <div class="square" ng-click = "setCurrent('5',$parent.$index,$index)" ng-repeat="square in instance track by $index" ng-style="{'background-color': hexcodeMap[square]}">5</div>
-                </div>
-            </div>
-            <div id="face" class="face two">
-                <div ng-repeat="instance in cubeDOM[3]">
-                    <div class="square" ng-click = "setCurrent('2',$parent.$index,$index)" ng-repeat="square in instance track by $index" ng-style="{'background-color': hexcodeMap[square]}">2</div>
-                </div>
-            </div>
-            <div id="face" class="face three">
-                <div ng-repeat="instance in cubeDOM[4]">
-                    <div class="square" ng-click = "setCurrent('3',$parent.$index,$index)" ng-repeat="square in instance track by $index" ng-style="{'background-color': hexcodeMap[square]}">3</div>
-                </div>
-            </div>
-            <div id="face" class="face six">
-                <div ng-repeat="instance in cubeDOM[5]">
-                    <div class="square" ng-click = "setCurrent('6',$parent.$index,$index)" ng-repeat="square in instance track by $index" ng-style="{'background-color': hexcodeMap[square]}">6</div>
-                </div>
-            </div>
-        </div>
+    <div class="else col-xs-12 col-md-9">
+
+      <i class="fa fa-arrow-up move move_up" ng-show="move" ng-click="up()" aria-hidden="true"></i>
+      <i class="fa fa-arrow-down move move_down" ng-show="move" ng-click="down()" aria-hidden="true"></i>
+      <i class="fa fa-arrow-right move move_right" ng-show="move" ng-click="rght()" aria-hidden="true"></i>
+      <i class="fa fa-arrow-left move move_left" ng-show="move" ng-click="lft()" aria-hidden="true"></i>
+
+      <div id="cube">
+          <h1 style="color: #fff"> {{ error }} </h1>
+          <div id="container">
+              <div id="face" class="face one" ng-init="parentIndex = $index">
+                  <div ng-repeat="instance in cubeDOM[0]">
+                      <div class="square" ng-click = "setCurrent('1',$parent.$index,$index)" ng-repeat="square in instance track by $index" ng-style="{'background-color': hexcodeMap[square]}">1</div>
+                  </div>
+              </div>
+              <div id="face" class="face four">
+                  <div ng-repeat="instance in cubeDOM[1]">
+                      <div class="square" ng-click = "setCurrent('4',$parent.$index,$index)" ng-repeat="square in instance track by $index" ng-style="{'background-color': hexcodeMap[square]}">4</div>
+                  </div>
+              </div>
+              <div id="face" class="face five">
+                  <div ng-repeat="instance in cubeDOM[2]">
+                      <div class="square" ng-click = "setCurrent('5',$parent.$index,$index)" ng-repeat="square in instance track by $index" ng-style="{'background-color': hexcodeMap[square]}">5</div>
+                  </div>
+              </div>
+              <div id="face" class="face two">
+                  <div ng-repeat="instance in cubeDOM[3]">
+                      <div class="square" ng-click = "setCurrent('2',$parent.$index,$index)" ng-repeat="square in instance track by $index" ng-style="{'background-color': hexcodeMap[square]}">2</div>
+                  </div>
+              </div>
+              <div id="face" class="face three">
+                  <div ng-repeat="instance in cubeDOM[4]">
+                      <div class="square" ng-click = "setCurrent('3',$parent.$index,$index)" ng-repeat="square in instance track by $index" ng-style="{'background-color': hexcodeMap[square]}">3</div>
+                  </div>
+              </div>
+              <div id="face" class="face six">
+                  <div ng-repeat="instance in cubeDOM[5]">
+                      <div class="square" ng-click = "setCurrent('6',$parent.$index,$index)" ng-repeat="square in instance track by $index" ng-style="{'background-color': hexcodeMap[square]}">6</div>
+                  </div>
+              </div>
+          </div>
+
+      </div>
     </div>
 
 </body>
-
-</html>

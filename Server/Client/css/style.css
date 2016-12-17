@@ -1,6 +1,86 @@
 html, body{
-  width:100%; width:100%; margin:0; padding:0;
-  background: #000;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+.logon {
+  background: #fff;
+  width: 25%;
+  padding-left: 2%;
+  padding-right: 2%;
+  font-family: Arial;
+  color: black !important;
+  height: auto;
+  line-height: 1.5;
+}
+
+.logon p {
+  font-size: 1.3em;
+}
+
+.logon h1 {
+  font-size: 2.5em;
+}
+
+.else {
+  background: #F7484E;
+  flex: 0 1 auto;
+  height: 100% !important;
+  display: block;
+  position: relative;
+}
+
+input {
+  border: none;
+  border-bottom: 1px solid black;
+  display: block;
+  color: black;
+  font-size: 14px;
+  margin-top: 6% !important; !important;
+  line-height: 1.5;
+  padding-left: 3%;
+  padding-right: 3%;
+}
+
+input:focus {
+  outline: none;
+}
+
+.action {
+  background: #efefef;
+  border: none;
+  margin-top: 6%;
+  padding: 2%;
+  outline: none;
+  border-radius: 0;
+  color: #000;
+  font-family: Arial;
+  font-size: 1.2em;
+}
+
+.action .a2 {
+  background: green;
+  color: #fff;
+}
+
+.action:hover {
+  background: black;
+  color: white;
+}
+
+.title {
+  text-align: center;
+}
+
+.subtitle {
+  font-variant: underline;
+  border-bottom: 1px solid black;
+}
+
+.logon input h1 h2 {
+  color: black;
 }
 
 #cube {
@@ -10,9 +90,50 @@ html, body{
   -moz-perspective-origin: 50% 200px;
   perspective: 800px;
   perspective-origin: 50% 200px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -100px;
+  margin-top: -100px;
+
 }
 
-button {
+.move {
+  color: #efefef;
+  padding: 2%;
+  position: absolute;
+  font-size: 4.5em !important;
+}
+
+.move:hover {
+  color: black;
+}
+
+.move_up {
+  position: absolute;
+  top: 0;
+  margin-left: -5%;
+  left: 50%;
+}
+
+.move_down {
+  position: absolute;
+  bottom: 0;
+  margin-left: -5%;
+  left: 50%;
+}
+
+.move_left {
+  position: absolute;
+  top: 50%;
+  margin-top: -5%;
+  left: 0;
+}
+
+.move_right {
+  right: 0;
+  margin-top: -5%;
+  top: 50%;
 }
 
 button:hover {
@@ -21,11 +142,9 @@ button:hover {
 }
 
 #container {
-  position: relative;
-  margin: 6em auto;
+  margin: 1em auto;
   height: 20em;
   width: 20em;
-  top: 7em;
   -webkit-transition: -webkit-transform 2s linear;
   -webkit-transform-style: preserve-3d;
   -moz-transition: -moz-transform 2s linear;
@@ -39,17 +158,14 @@ button:hover {
   padding: none;
 }
 
-.square :hover {
-  border: solid 1px orange;
-}
-
 .square {
-  height: 5em;
-  width:  5em;
+  height: 5.1em;
+  width:  5.1em;
   border: 1px solid black;
   display: inline-block;
-  opacity: 0.75;
+  opacity: 0.8;
 }
+
 
 #cube .one  {
   -webkit-transform: rotateX(90deg) translateZ(7.6em);

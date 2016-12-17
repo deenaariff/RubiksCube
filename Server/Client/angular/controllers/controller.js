@@ -6,56 +6,84 @@ controllers.controller("MainCtrl", function($scope, SocketIO, cubeLogic) {
 
         // Set Modules
         var socket = SocketIO; // load socket io functionality
+        var cubeLogic = cubeLogic;
 
         // Initialize DOM elements
-
         $scope.selected = true;
-        $scope.error; // Displays Erros
-        $scope.logon = true; // Whether Signin Div Dispalys
-        $scope.signin = true;  // Display Signin Form
-        $scope.cuser = false // Display Create User Form
-        $scope.moves = 0; // Number of Moves
-        $scope.move = false; // Show Navigation Arrows
-        $scope.won = false;
-        $scope.time = 0;
-        $scope.user = {}
+            $scope.error; // Displays Erros
+            $scope.logon = true; // Whether Signin Div Dispalys
+            $scope.signin = true;  // Display Signin Form
+            $scope.cuser = false // Display Create User Form
+            $scope.moves = 0; // Number of Moves
+            $scope.move = false; // Show Navigation Arrows
+            $scope.won = false;
+            $scope.time = 0;
+            $scope.user = {}
+            $scope.instantiation = false;
+            $scope.data;
 
-        $scope.instantiation = false;
-        $scope.data;
+        function enableLogin () {
 
-        $scope.login = function() {
-            console.log("login attempt")
-            var data = $scope.data.signin;
-            console.log(data);
-            $scope.error = ""
-            $scope.user.email = data.u_email
-            $scope.user.password = data.pass
-            socket.emit("user:login", data);
-        }
+            $scope.login = function() {
+                console.log("login attempt")
+                var data = $scope.data.signin;
+                console.log(data);
+                $scope.error = ""
+                $scope.user.email = data.u_email
+                $scope.user.password = data.pass
+                socket.emit("user:login", data);
+            }
 
-        $scope.createUser = function() {
-            console.log("user created")
-            var data = $scope.data.cuser;
-            console.log($scope.data.cuser)
-            $scope.error = ""
-            $scope.user.email = data.u_email
-            $scope.user.password = data.pass2
-            if (data.pass1 === data.pass2)
-                socket.emit("user:create", data);
-            else {
-                scope.error = "Passwords do not match"
+            $scope.createUser = function() {
+                console.log("user created")
+                var data = $scope.data.cuser;
+                console.log($scope.data.cuser)
+                $scope.error = ""
+                $scope.user.email = data.u_email
+                $scope.user.password = data.pass2
+                if (data.pass1 === data.pass2)
+                    socket.emit("user:create", data);
+                else {
+                    scope.error = "Passwords do not match"
+                }
             }
         }
 
-        socket.on("err", function (data) {
-          console.log("New Error" + data);
-          $scope.error = data;
-        });
+        /* LISTEN TO SOCKET IO BROADCASTS */
+        function socketListeners () {
 
+          socket.on("err", function (data) {
+            console.log("New Error" + data);
+            $scope.error = data;
+          });
+
+          socket.on("initCube", function(data) {
+              indexArray = ["1","2","3","4","5","6"]
+              console.log(data.state)
+              for (var i = 0; i < indexArray.length; i++) {
+                var face = cube[indexArray[i]]
+                for (var j = 0; j < face.length; j++) {
+                  var row = face[j];
+                  for (var k = 0; k < row.length; k++)
+                    cube[indexArray[i]][j][k] = data.state[indexArray[i]][j][k]
+                }
+              }
+              if ($scope.instantiation === false) {
+                $scope.moves = data.moves;
+                $scope.time = data.time;
+                sessionTime = new Date().getTime() / 1000;
+                $scope.instantiation = true;
+                $scope.signin = false;
+                $scope.cuser = false;
+              }
+          });
+        }
+
+
+        /* State of Cube Data*/
         var curRow = 0;
         var curCol = 0;
         var curFace = 0;
-
         var tmp;
 
         $scope.setCurrent = function(face, row, col) {
@@ -106,26 +134,9 @@ controllers.controller("MainCtrl", function($scope, SocketIO, cubeLogic) {
         function initCube() {}
         var sessionTime;
 
-        socket.on("initCube", function(data) {
-            indexArray = ["1","2","3","4","5","6"]
-            console.log(data.state)
-            for (var i = 0; i < indexArray.length; i++) {
-              var face = cube[indexArray[i]]
-              for (var j = 0; j < face.length; j++) {
-                var row = face[j];
-                for (var k = 0; k < row.length; k++)
-                  cube[indexArray[i]][j][k] = data.state[indexArray[i]][j][k]
-              }
-            }
-            if ($scope.instantiation === false) {
-              $scope.moves = data.moves;
-              $scope.time = data.time;
-              sessionTime = new Date().getTime() / 1000;
-              $scope.instantiation = true;
-              $scope.signin = false;
-              $scope.cuser = false;
-            }
-        });
+        $scope.testController = cubeLogic.f_data.data;
+        cubeLogic.f_data.add();
+
 
         $scope.up = function () {
           console.log("UP:" + curRow + curCol)
@@ -202,6 +213,7 @@ controllers.controller("MainCtrl", function($scope, SocketIO, cubeLogic) {
 
         /* Perform Horizontal move Operation*/
         function hMove (cube,_id,row,dir,_buffer,iter,path) {
+          
             var buf = [];
             var pathArray = []
             var rotations = paths[hAdjacencyPath[_id]][_id];
@@ -242,40 +254,41 @@ controllers.controller("MainCtrl", function($scope, SocketIO, cubeLogic) {
 
           /* Perform Vertical move Operation*/
         function vMove (cube,_id,col,dir,_buffer,iter,path) {
-          var buf = [];
-          var pathArray = []
-          var rotations = paths[vAdjacencyPath[_id]][_id];
-          if(!iter) {
-            iter = 1;
-            pathArray = pathSearch[vAdjacencyPath[_id]]
-          }
-          else {
-            iter = iter + 1;
-            pathArray = path;
-            if (vAdjacencyPath[_id] === '')
-              rotations = 0;
-          }
-          rotateMatrix(_id,rotations)
-          for (var i = 0; i < cube[_id].length; i++)
-              buf.push(cube[_id][i][col])
-          if (_buffer) {
-             for (var i = 0; i < cube[_id].length; i++)
-                cube[_id][i][col] = _buffer[i];
-          }
-          rotateMatrix(_id,-1*rotations)
-          var index = mod((pathArray.indexOf(_id) + dir), 4);
-              var new_id = pathArray[index];
-              if (iter != 5)
-                vMove(cube,new_id,col,dir,buf,iter,pathArray)
-              else {
-                  var data = {}
-                  data.state = cube;
-                  data.user = $scope.user;
-                  data.moves = $scope.moves;
-                  data.time = (new Date().getTime() / 1000) - $scope.time;
-                  socket.emit("cube:update", data)
-                  $scope.move = false;
-              }
+
+            var buf = [];
+            var pathArray = []
+            var rotations = paths[vAdjacencyPath[_id]][_id];
+            if(!iter) {
+              iter = 1;
+              pathArray = pathSearch[vAdjacencyPath[_id]]
+            }
+            else {
+              iter = iter + 1;
+              pathArray = path;
+              if (vAdjacencyPath[_id] === '')
+                rotations = 0;
+            }
+            rotateMatrix(_id,rotations)
+            for (var i = 0; i < cube[_id].length; i++)
+                buf.push(cube[_id][i][col])
+            if (_buffer) {
+               for (var i = 0; i < cube[_id].length; i++)
+                  cube[_id][i][col] = _buffer[i];
+            }
+            rotateMatrix(_id,-1*rotations)
+            var index = mod((pathArray.indexOf(_id) + dir), 4);
+                var new_id = pathArray[index];
+                if (iter != 5)
+                  vMove(cube,new_id,col,dir,buf,iter,pathArray)
+                else {
+                    var data = {}
+                    data.state = cube;
+                    data.user = $scope.user;
+                    data.moves = $scope.moves;
+                    data.time = (new Date().getTime() / 1000) - $scope.time;
+                    socket.emit("cube:update", data)
+                    $scope.move = false;
+                }
         }
 
        function randomize (cube, degree) {
